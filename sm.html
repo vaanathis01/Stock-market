@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>StockTracker</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      cursor:none;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:#020617;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:
+      radial-gradient(circle at top left,rgba(34,197,94,0.18),transparent 35%),
+      radial-gradient(circle at bottom right,rgba(6,182,212,0.18),transparent 35%);
+      z-index:-2;
+    }
+
+    .cursor{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      position:fixed;
+      background:#22c55e;
+      pointer-events:none;
+      transform:translate(-50%,-50%);
+      z-index:99999;
+      box-shadow:
+      0 0 20px #22c55e,
+      0 0 40px #22c55e,
+      0 0 60px #22c55e;
+    }
+
+    nav{
+      width:100%;
+      padding:25px 80px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:fixed;
+      top:0;
+      z-index:1000;
+      background:rgba(0,0,0,0.25);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    nav h1{
+      font-size:40px;
+      font-weight:900;
+      background:linear-gradient(to right,#22c55e,#06b6d4);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    nav ul{
+      display:flex;
+      gap:30px;
+      list-style:none;
+      align-items:center;
+    }
+
+    nav a{
+      color:white;
+      text-decoration:none;
+      font-size:18px;
+      transition:0.3s;
+    }
+
+    nav a:hover{
+      color:#22c55e;
+    }
+
+    .nav-buttons{
+      display:flex;
+      gap:15px;
+      align-items:center;
+    }
+
+    .login-btn,
+    .signup-btn{
+      padding:14px 24px;
+      border-radius:16px;
+      border:none;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:16px;
+      font-weight:700;
+      transition:0.3s;
+    }
+
+    .login-btn{
+      background:rgba(255,255,255,0.08);
+      color:white;
+      border:1px solid rgba(255,255,255,0.1);
+    }
+
+    .signup-btn{
+      background:linear-gradient(to right,#22c55e,#06b6d4);
+      color:black;
+    }
+
+    .login-btn:hover,
+    .signup-btn:hover{
+      transform:scale(1.08);
+      box-shadow:0 0 25px rgba(34,197,94,0.35);
+    }
+
+    section{
+      min-height:100vh;
+      padding:140px 80px 80px;
+      display:none;
+    }
+
+    .active{
+      display:block;
+    }
+
+    .hero{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+    }
+
+    .hero-content h2{
+      font-size:100px;
+      font-weight:900;
+      line-height:1;
+    }
+
+    .gradient{
+      background:linear-gradient(to right,#22c55e,#06b6d4);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .hero-content p{
+      margin-top:30px;
+      font-size:24px;
+      color:#94a3b8;
+      max-width:850px;
+      margin-inline:auto;
+      line-height:1.7;
+    }
+
+    .buttons{
+      margin-top:50px;
+      display:flex;
+      gap:20px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .primary-btn{
+      padding:18px 40px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(to right,#22c55e,#06b6d4);
+      font-size:18px;
+      font-weight:700;
+    }
+
+    .secondary-btn{
+      padding:18px 40px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:rgba(255,255,255,0.05);
+      color:white;
+      font-size:18px;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+      margin-top:60px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(20px);
+      border-radius:30px;
+      padding:40px;
+      transition:0.4s;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+      box-shadow:0 0 40px rgba(34,197,94,0.18);
+    }
+
+    .card h3{
+      color:#94a3b8;
+      font-size:22px;
+    }
+
+    .card h1{
+      margin-top:20px;
+      font-size:55px;
+      font-weight:900;
+    }
+
+    .green{
+      color:#22c55e;
+    }
+
+    .red{
+      color:#ef4444;
+    }
+
+    .title{
+      font-size:70px;
+      font-weight:900;
+      margin-bottom:50px;
+    }
+
+    .chart-box{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:30px;
+      padding:40px;
+      margin-top:60px;
+    }
+
+    .auth-container{
+      max-width:500px;
+      margin:auto;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(20px);
+      border-radius:30px;
+      padding:50px;
+    }
+
+    .auth-container h1{
+      text-align:center;
+      font-size:50px;
+      margin-bottom:40px;
+    }
+
+    .input-group{
+      margin-bottom:25px;
+    }
+
+    .input-group label{
+      display:block;
+      margin-bottom:10px;
+      color:#94a3b8;
+    }
+
+    .input-group input{
+      width:100%;
+      padding:18px;
+      border:none;
+      border-radius:15px;
+      background:rgba(255,255,255,0.08);
+      color:white;
+      font-size:16px;
+      outline:none;
+    }
+
+    .submit-btn{
+      width:100%;
+      padding:18px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(to right,#22c55e,#06b6d4);
+      font-size:18px;
+      font-weight:700;
+      margin-top:15px;
+    }
+
+    footer{
+      text-align:center;
+      padding:40px;
+      color:#94a3b8;
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    @media(max-width:900px){
+
+      *{
+        cursor:auto;
+      }
+
+      .cursor{
+        display:none;
+      }
+
+      nav{
+        padding:20px;
+        flex-direction:column;
+        gap:20px;
+      }
+
+      nav ul{
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+
+      section{
+        padding:180px 20px 40px;
+      }
+
+      .hero-content h2{
+        font-size:60px;
+      }
+
+      .title{
+        font-size:45px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="cursor"></div>
+
+  <nav>
+
+    <h1>StockTracker</h1>
+
+    <ul>
+
+      <li><a onclick="showPage('home')">Home</a></li>
+
+      <li><a onclick="showPage('markets')">Markets</a></li>
+
+      <li><a onclick="showPage('portfolio')">Portfolio</a></li>
+
+      <li class="nav-buttons">
+
+        <button class="login-btn" onclick="showPage('login')">
+
+          <i class="fa-solid fa-user"></i>
+
+          Login
+
+        </button>
+
+        <button class="signup-btn" onclick="showPage('signup')">
+
+          <i class="fa-solid fa-user-plus"></i>
+
+          Sign Up
+
+        </button>
+
+      </li>
+
+    </ul>
+
+  </nav>
+
+  <section id="home" class="active">
+
+    <div class="hero">
+
+      <div class="hero-content">
+
+        <h2>
+
+          Track Markets <br>
+
+          <span class="gradient">
+            Trade Smarter
+          </span>
+
+        </h2>
+
+        <p>
+          Premium stock market analytics platform with real-time insights,
+          crypto tracking, and portfolio management.
+        </p>
+
+        <div class="buttons">
+
+          <button class="primary-btn" onclick="showPage('markets')">
+            Explore Markets
+          </button>
+
+          <button class="secondary-btn" onclick="showPage('portfolio')">
+            View Portfolio
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="markets">
+
+    <h1 class="title">
+      Live Markets
+    </h1>
+
+    <div class="cards">
+
+      <div class="card">
+
+        <h3>Apple</h3>
+
+        <h1 class="green">+2.4%</h1>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Tesla</h3>
+
+        <h1 class="red">-1.1%</h1>
+
+      </div>
+
+      <div class="card">
+
+        <h3>NVIDIA</h3>
+
+        <h1 class="green">+3.7%</h1>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Amazon</h3>
+
+        <h1 class="green">+1.9%</h1>
+
+      </div>
+
+    </div>
+
+    <div class="chart-box">
+
+      <canvas id="marketChart"></canvas>
+
+    </div>
+
+  </section>
+
+  <section id="portfolio">
+
+    <h1 class="title">
+      Portfolio Dashboard
+    </h1>
+
+    <div class="cards">
+
+      <div class="card">
+
+        <h3>Total Balance</h3>
+
+        <h1 class="green">₹1,25,000</h1>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Today's Profit</h3>
+
+        <h1 class="green">+₹4,500</h1>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Active Stocks</h3>
+
+        <h1>12</h1>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="login">
+
+    <div class="auth-container">
+
+      <h1>Login</h1>
+
+      <div class="input-group">
+
+        <label>Email</label>
+
+        <input type="email" id="loginEmail" placeholder="Enter your email">
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Password</label>
+
+        <input type="password" id="loginPassword" placeholder="Enter your password">
+
+      </div>
+
+      <button class="submit-btn" onclick="loginUser()">
+        Login
+      </button>
+
+    </div>
+
+  </section>
+
+  <section id="signup">
+
+    <div class="auth-container">
+
+      <h1>Create Account</h1>
+
+      <div class="input-group">
+
+        <label>Full Name</label>
+
+        <input type="text" id="signupName" placeholder="Enter your full name">
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Email</label>
+
+        <input type="email" id="signupEmail" placeholder="Enter your email">
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Password</label>
+
+        <input type="password" id="signupPassword" placeholder="Create password">
+
+      </div>
+
+      <button class="submit-btn" onclick="signupUser()">
+        Sign Up
+      </button>
+
+    </div>
+
+  </section>
+
+  <footer>
+
+    <h2>StockTracker</h2>
+
+    <p>Premium stock market analytics platform.</p>
+
+  </footer>
+
+  <script>
+
+    const AIRTABLE_TOKEN = "PASTE_YOUR_AIRTABLE_TOKEN";
+
+    const BASE_ID = "PASTE_YOUR_BASE_ID";
+
+    const TABLE_NAME = "Users";
+
+    function showPage(pageId){
+
+      const sections=document.querySelectorAll("section");
+
+      sections.forEach(section=>{
+
+        section.classList.remove("active");
+
+      });
+
+      document.getElementById(pageId).classList.add("active");
+
+      window.scrollTo(0,0);
+
+    }
+
+    const cursor=document.querySelector(".cursor");
+
+    document.addEventListener("mousemove",(e)=>{
+
+      cursor.style.left=e.clientX+"px";
+
+      cursor.style.top=e.clientY+"px";
+
+    });
+
+    async function signupUser(){
+
+      const name=document.getElementById("signupName").value;
+
+      const email=document.getElementById("signupEmail").value;
+
+      const password=document.getElementById("signupPassword").value;
+
+      const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`,{
+
+        method:"POST",
+
+        headers:{
+
+          Authorization:`Bearer ${AIRTABLE_TOKEN}`,
+
+          "Content-Type":"application/json"
+
+        },
+
+        body:JSON.stringify({
+
+          fields:{
+
+            Name:name,
+
+            Email:email,
+
+            Password:password
+
+          }
+
+        })
+
+      });
+
+      if(response.ok){
+
+        alert("Account Created Successfully!");
+
+        showPage("login");
+
+      }else{
+
+        alert("Error Creating Account");
+
+      }
+
+    }
+
+    async function loginUser(){
+
+      const email=document.getElementById("loginEmail").value;
+
+      const password=document.getElementById("loginPassword").value;
+
+      const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`,{
+
+        headers:{
+
+          Authorization:`Bearer ${AIRTABLE_TOKEN}`
+
+        }
+
+      });
+
+      const data = await response.json();
+
+      const users = data.records;
+
+      const validUser = users.find(user =>
+
+        user.fields.Email === email &&
+        user.fields.Password === password
+
+      );
+
+      if(validUser){
+
+        alert("Login Successful!");
+
+        showPage("portfolio");
+
+      }else{
+
+        alert("Invalid Email or Password");
+
+      }
+
+    }
+
+    const ctx=document.getElementById('marketChart');
+
+    new Chart(ctx,{
+
+      type:'line',
+
+      data:{
+
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+
+        datasets:[{
+
+          label:'Market Growth',
+
+          data:[400,700,500,900,800,1200,1000],
+
+          borderColor:'#22c55e',
+
+          backgroundColor:'rgba(34,197,94,0.15)',
+
+          fill:true,
+
+          tension:0.4,
+
+          borderWidth:4,
+
+          pointRadius:0
+
+        }]
+
+      },
+
+      options:{
+
+        responsive:true,
+
+        plugins:{
+
+          legend:{
+            display:false
+          }
+
+        }
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
