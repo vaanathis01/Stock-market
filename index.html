@@ -256,6 +256,61 @@
       margin-top:60px;
     }
 
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:35px;
+      margin-top:60px;
+    }
+
+    .gallery-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:30px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(20px);
+      transition:0.5s;
+      height:280px;
+    }
+
+    .gallery-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:0.6s;
+    }
+
+    .gallery-card:hover img{
+      transform:scale(1.08);
+    }
+
+    .gallery-card:hover{
+      transform:translateY(-10px);
+      box-shadow:
+      0 0 40px rgba(34,197,94,0.25),
+      0 0 80px rgba(6,182,212,0.18);
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to top,
+        rgba(0,0,0,0.9),
+        rgba(0,0,0,0.15)
+      );
+      display:flex;
+      align-items:flex-end;
+      padding:30px;
+    }
+
+    .overlay h2{
+      font-size:28px;
+      font-weight:800;
+      color:white;
+    }
+
     .auth-container{
       max-width:500px;
       margin:auto;
@@ -365,6 +420,8 @@
       <li><a onclick="showPage('markets')">Markets</a></li>
 
       <li><a onclick="showPage('portfolio')">Portfolio</a></li>
+
+      <li><a onclick="showPage('gallery')">Gallery</a></li>
 
       <li class="nav-buttons">
 
@@ -515,256 +572,87 @@
 
   </section>
 
-  <section id="login">
+  <section id="gallery">
 
-    <div class="auth-container">
+    <h1 class="title">
+      Premium Market Gallery
+    </h1>
 
-      <h1>Login</h1>
+    <div class="gallery-grid">
 
-      <div class="input-group">
-
-        <label>Email</label>
-
-        <input type="email" id="loginEmail" placeholder="Enter your email">
-
+      <div class="gallery-card">
+        <img src="images/market-open.jpg">
+        <div class="overlay">
+          <h2>Market Open</h2>
+        </div>
       </div>
 
-      <div class="input-group">
-
-        <label>Password</label>
-
-        <input type="password" id="loginPassword" placeholder="Enter your password">
-
+      <div class="gallery-card">
+        <img src="images/mid-day-analysis.jpg">
+        <div class="overlay">
+          <h2>Mid-Day Analysis</h2>
+        </div>
       </div>
 
-      <button class="submit-btn" onclick="loginUser()">
-        Login
-      </button>
+      <div class="gallery-card">
+        <img src="images/market-close.jpg">
+        <div class="overlay">
+          <h2>Market Close</h2>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="images/profit-growth.jpg">
+        <div class="overlay">
+          <h2>Profit Growth</h2>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="images/loss-analysis.jpg">
+        <div class="overlay">
+          <h2>Loss Analysis</h2>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="images/portfolio-management.jpg">
+        <div class="overlay">
+          <h2>Portfolio Management</h2>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="images/technical-analysis.jpg">
+        <div class="overlay">
+          <h2>Technical Analysis</h2>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="images/investor-strategy.jpg">
+        <div class="overlay">
+          <h2>Investor Strategy</h2>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="images/stock-comparison.jpg">
+        <div class="overlay">
+          <h2>Stock Comparison</h2>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="images/global-market.jpg">
+        <div class="overlay">
+          <h2>Global Market Overview</h2>
+        </div>
+      </div>
 
     </div>
 
   </section>
-
-  <section id="signup">
-
-    <div class="auth-container">
-
-      <h1>Create Account</h1>
-
-      <div class="input-group">
-
-        <label>Full Name</label>
-
-        <input type="text" id="signupName" placeholder="Enter your full name">
-
-      </div>
-
-      <div class="input-group">
-
-        <label>Email</label>
-
-        <input type="email" id="signupEmail" placeholder="Enter your email">
-
-      </div>
-
-      <div class="input-group">
-
-        <label>Password</label>
-
-        <input type="password" id="signupPassword" placeholder="Create password">
-
-      </div>
-
-      <button class="submit-btn" onclick="signupUser()">
-        Sign Up
-      </button>
-
-    </div>
-
-  </section>
-
-  <footer>
-
-    <h2>StockTracker</h2>
-
-    <p>Premium stock market analytics platform.</p>
-
-  </footer>
-
-  <script>
-
-    const AIRTABLE_TOKEN = "PASTE_YOUR_AIRTABLE_TOKEN";
-
-    const BASE_ID = "PASTE_YOUR_BASE_ID";
-
-    const TABLE_NAME = "Users";
-
-    function showPage(pageId){
-
-      const sections=document.querySelectorAll("section");
-
-      sections.forEach(section=>{
-
-        section.classList.remove("active");
-
-      });
-
-      document.getElementById(pageId).classList.add("active");
-
-      window.scrollTo(0,0);
-
-    }
-
-    const cursor=document.querySelector(".cursor");
-
-    document.addEventListener("mousemove",(e)=>{
-
-      cursor.style.left=e.clientX+"px";
-
-      cursor.style.top=e.clientY+"px";
-
-    });
-
-    async function signupUser(){
-
-      const name=document.getElementById("signupName").value;
-
-      const email=document.getElementById("signupEmail").value;
-
-      const password=document.getElementById("signupPassword").value;
-
-      const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`,{
-
-        method:"POST",
-
-        headers:{
-
-          Authorization:`Bearer ${AIRTABLE_TOKEN}`,
-
-          "Content-Type":"application/json"
-
-        },
-
-        body:JSON.stringify({
-
-          fields:{
-
-            Name:name,
-
-            Email:email,
-
-            Password:password
-
-          }
-
-        })
-
-      });
-
-      if(response.ok){
-
-        alert("Account Created Successfully!");
-
-        showPage("login");
-
-      }else{
-
-        alert("Error Creating Account");
-
-      }
-
-    }
-
-    async function loginUser(){
-
-      const email=document.getElementById("loginEmail").value;
-
-      const password=document.getElementById("loginPassword").value;
-
-      const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`,{
-
-        headers:{
-
-          Authorization:`Bearer ${AIRTABLE_TOKEN}`
-
-        }
-
-      });
-
-      const data = await response.json();
-
-      const users = data.records;
-
-      const validUser = users.find(user =>
-
-        user.fields.Email === email &&
-        user.fields.Password === password
-
-      );
-
-      if(validUser){
-
-        alert("Login Successful!");
-
-        showPage("portfolio");
-
-      }else{
-
-        alert("Invalid Email or Password");
-
-      }
-
-    }
-
-    const ctx=document.getElementById('marketChart');
-
-    new Chart(ctx,{
-
-      type:'line',
-
-      data:{
-
-        labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-
-        datasets:[{
-
-          label:'Market Growth',
-
-          data:[400,700,500,900,800,1200,1000],
-
-          borderColor:'#22c55e',
-
-          backgroundColor:'rgba(34,197,94,0.15)',
-
-          fill:true,
-
-          tension:0.4,
-
-          borderWidth:4,
-
-          pointRadius:0
-
-        }]
-
-      },
-
-      options:{
-
-        responsive:true,
-
-        plugins:{
-
-          legend:{
-            display:false
-          }
-
-        }
-
-      }
-
-    });
-
-  </script>
 
 </body>
 
