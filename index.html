@@ -13,8 +13,7 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -267,11 +266,9 @@
       position:relative;
       overflow:hidden;
       border-radius:30px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
-      backdrop-filter:blur(20px);
-      transition:0.5s;
       height:280px;
+      transition:0.5s;
+      border:1px solid rgba(255,255,255,0.08);
     }
 
     .gallery-card img{
@@ -295,11 +292,7 @@
     .overlay{
       position:absolute;
       inset:0;
-      background:linear-gradient(
-        to top,
-        rgba(0,0,0,0.9),
-        rgba(0,0,0,0.15)
-      );
+      background:linear-gradient(to top,rgba(0,0,0,0.9),rgba(0,0,0,0.1));
       display:flex;
       align-items:flex-end;
       padding:30px;
@@ -308,7 +301,6 @@
     .overlay h2{
       font-size:28px;
       font-weight:800;
-      color:white;
     }
 
     .auth-container{
@@ -415,13 +407,13 @@
 
     <ul>
 
-      <li><a onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
 
-      <li><a onclick="showPage('markets')">Markets</a></li>
+      <li><a href="#" onclick="showPage('markets')">Markets</a></li>
 
-      <li><a onclick="showPage('portfolio')">Portfolio</a></li>
+      <li><a href="#" onclick="showPage('portfolio')">Portfolio</a></li>
 
-      <li><a onclick="showPage('gallery')">Gallery</a></li>
+      <li><a href="#" onclick="showPage('gallery')">Gallery</a></li>
 
       <li class="nav-buttons">
 
@@ -495,43 +487,29 @@
     <div class="cards">
 
       <div class="card">
-
         <h3>Apple</h3>
-
         <h1 class="green">+2.4%</h1>
-
       </div>
 
       <div class="card">
-
         <h3>Tesla</h3>
-
         <h1 class="red">-1.1%</h1>
-
       </div>
 
       <div class="card">
-
         <h3>NVIDIA</h3>
-
         <h1 class="green">+3.7%</h1>
-
       </div>
 
       <div class="card">
-
         <h3>Amazon</h3>
-
         <h1 class="green">+1.9%</h1>
-
       </div>
 
     </div>
 
     <div class="chart-box">
-
       <canvas id="marketChart"></canvas>
-
     </div>
 
   </section>
@@ -545,27 +523,18 @@
     <div class="cards">
 
       <div class="card">
-
         <h3>Total Balance</h3>
-
         <h1 class="green">₹1,25,000</h1>
-
       </div>
 
       <div class="card">
-
         <h3>Today's Profit</h3>
-
         <h1 class="green">+₹4,500</h1>
-
       </div>
 
       <div class="card">
-
         <h3>Active Stocks</h3>
-
         <h1>12</h1>
-
       </div>
 
     </div>
@@ -582,77 +551,221 @@
 
       <div class="gallery-card">
         <img src="images/market-open.jpg">
-        <div class="overlay">
-          <h2>Market Open</h2>
-        </div>
+        <div class="overlay"><h2>Market Open</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/mid-day-analysis.jpg">
-        <div class="overlay">
-          <h2>Mid-Day Analysis</h2>
-        </div>
+        <div class="overlay"><h2>Mid-Day Analysis</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/market-close.jpg">
-        <div class="overlay">
-          <h2>Market Close</h2>
-        </div>
+        <div class="overlay"><h2>Market Close</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/profit-growth.jpg">
-        <div class="overlay">
-          <h2>Profit Growth</h2>
-        </div>
+        <div class="overlay"><h2>Profit Growth</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/loss-analysis.jpg">
-        <div class="overlay">
-          <h2>Loss Analysis</h2>
-        </div>
+        <div class="overlay"><h2>Loss Analysis</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/portfolio-management.jpg">
-        <div class="overlay">
-          <h2>Portfolio Management</h2>
-        </div>
+        <div class="overlay"><h2>Portfolio Management</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/technical-analysis.jpg">
-        <div class="overlay">
-          <h2>Technical Analysis</h2>
-        </div>
+        <div class="overlay"><h2>Technical Analysis</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/investor-strategy.jpg">
-        <div class="overlay">
-          <h2>Investor Strategy</h2>
-        </div>
+        <div class="overlay"><h2>Investor Strategy</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/stock-comparison.jpg">
-        <div class="overlay">
-          <h2>Stock Comparison</h2>
-        </div>
+        <div class="overlay"><h2>Stock Comparison</h2></div>
       </div>
 
       <div class="gallery-card">
         <img src="images/global-market.jpg">
-        <div class="overlay">
-          <h2>Global Market Overview</h2>
-        </div>
+        <div class="overlay"><h2>Global Market Overview</h2></div>
       </div>
 
     </div>
 
   </section>
+
+  <section id="login">
+
+    <div class="auth-container">
+
+      <h1>Login</h1>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" placeholder="Enter your email">
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" placeholder="Enter your password">
+      </div>
+
+      <button class="submit-btn">
+        Login
+      </button>
+
+    </div>
+
+  </section>
+
+  <section id="signup">
+
+    <div class="auth-container">
+
+      <h1>Create Account</h1>
+
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Enter your name">
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" placeholder="Enter your email">
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" placeholder="Create password">
+      </div>
+
+      <button class="submit-btn">
+        Sign Up
+      </button>
+
+    </div>
+
+  </section>
+
+  <footer>
+
+    <h2>StockTracker</h2>
+
+    <p>Premium stock market analytics platform.</p>
+
+  </footer>
+
+  <script>
+
+    function showPage(pageId){
+
+      const sections=document.querySelectorAll("section");
+
+      sections.forEach(section=>{
+
+        section.classList.remove("active");
+
+      });
+
+      document.getElementById(pageId).classList.add("active");
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+
+    }
+
+    const cursor=document.querySelector(".cursor");
+
+    document.addEventListener("mousemove",(e)=>{
+
+      cursor.style.left=e.clientX+"px";
+
+      cursor.style.top=e.clientY+"px";
+
+    });
+
+    const ctx=document.getElementById('marketChart');
+
+    new Chart(ctx,{
+
+      type:'line',
+
+      data:{
+
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+
+        datasets:[{
+
+          label:'Market Growth',
+
+          data:[400,700,500,900,800,1200,1000],
+
+          borderColor:'#22c55e',
+
+          backgroundColor:'rgba(34,197,94,0.15)',
+
+          fill:true,
+
+          tension:0.4,
+
+          borderWidth:4,
+
+          pointRadius:0
+
+        }]
+
+      },
+
+      options:{
+
+        responsive:true,
+
+        plugins:{
+
+          legend:{
+            display:false
+          }
+
+        },
+
+        scales:{
+
+          x:{
+            ticks:{
+              color:'#94a3b8'
+            },
+            grid:{
+              color:'rgba(255,255,255,0.05)'
+            }
+          },
+
+          y:{
+            ticks:{
+              color:'#94a3b8'
+            },
+            grid:{
+              color:'rgba(255,255,255,0.05)'
+            }
+          }
+
+        }
+
+      }
+
+    });
+
+  </script>
 
 </body>
 
