@@ -9,9 +9,10 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
 <style>
 
@@ -22,17 +23,40 @@ box-sizing:border-box;
 scroll-behavior:smooth;
 }
 
+:root{
+--primary:#22c55e;
+--secondary:#06b6d4;
+--dark:#020617;
+--card:rgba(255,255,255,0.05);
+--border:rgba(255,255,255,0.08);
+--text:#ffffff;
+--muted:#94a3b8;
+}
+
 body{
 font-family:'Inter',sans-serif;
-background:#020617;
-color:white;
+background:var(--dark);
+color:var(--text);
 overflow-x:hidden;
-transition:0.4s;
+transition:0.5s;
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
 }
 
 body.light{
+--dark:#f8fafc;
+--card:rgba(255,255,255,0.8);
+--border:rgba(15,23,42,0.08);
+--text:#0f172a;
+--muted:#475569;
 background:#f8fafc;
-color:#0f172a;
+}
+
+#particles-js{
+position:fixed;
+inset:0;
+z-index:-3;
 }
 
 body::before{
@@ -50,14 +74,46 @@ width:20px;
 height:20px;
 border-radius:50%;
 position:fixed;
-background:#22c55e;
+background:var(--primary);
 pointer-events:none;
 transform:translate(-50%,-50%);
 z-index:99999;
 box-shadow:
-0 0 20px #22c55e,
-0 0 40px #22c55e,
-0 0 60px #22c55e;
+0 0 20px var(--primary),
+0 0 40px var(--primary),
+0 0 60px var(--primary);
+}
+
+#loader{
+position:fixed;
+inset:0;
+background:#020617;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:999999;
+}
+
+.loader-logo{
+font-size:70px;
+font-weight:900;
+background:linear-gradient(to right,var(--primary),var(--secondary));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:pulse 2s infinite;
+}
+
+.loader-text{
+margin-top:20px;
+color:#94a3b8;
+letter-spacing:5px;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.05);}
+100%{transform:scale(1);}
 }
 
 .stock-ticker{
@@ -78,7 +134,7 @@ gap:80px;
 white-space:nowrap;
 animation:tickerMove 20s linear infinite;
 font-weight:700;
-color:#22c55e;
+color:var(--primary);
 }
 
 @keyframes tickerMove{
@@ -88,22 +144,29 @@ color:#22c55e;
 
 nav{
 width:100%;
-padding:25px 80px;
+padding:22px 80px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 position:fixed;
 top:40px;
 z-index:1000;
-background:rgba(0,0,0,0.25);
-backdrop-filter:blur(20px);
+background:rgba(255,255,255,0.04);
+backdrop-filter:blur(25px);
 border-bottom:1px solid rgba(255,255,255,0.08);
+transition:0.4s;
 }
 
-nav h1{
-font-size:40px;
+nav.scrolled{
+padding:16px 80px;
+background:rgba(2,6,23,0.9);
+box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+.logo{
+font-size:42px;
 font-weight:900;
-background:linear-gradient(to right,#22c55e,#06b6d4);
+background:linear-gradient(to right,var(--primary),var(--secondary));
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
@@ -116,38 +179,68 @@ align-items:center;
 }
 
 nav a{
-color:white;
+color:var(--text);
 text-decoration:none;
-font-size:18px;
+font-size:17px;
+font-weight:600;
 transition:0.3s;
+position:relative;
 cursor:pointer;
 }
 
-body.light nav a{
-color:#0f172a;
+nav a::after{
+content:'';
+position:absolute;
+left:0;
+bottom:-6px;
+width:0%;
+height:2px;
+background:var(--primary);
+transition:0.3s;
+}
+
+nav a:hover::after{
+width:100%;
 }
 
 nav a:hover{
-color:#22c55e;
+color:var(--primary);
 }
 
 .toggle-btn{
 padding:12px 18px;
 border:none;
 border-radius:15px;
-background:linear-gradient(to right,#22c55e,#06b6d4);
+background:linear-gradient(to right,var(--primary),var(--secondary));
 font-weight:700;
+cursor:pointer;
+transition:0.3s;
+}
+
+.toggle-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 30px rgba(34,197,94,0.4);
+}
+
+.menu-btn{
+display:none;
+font-size:28px;
 cursor:pointer;
 }
 
 section{
 min-height:100vh;
-padding:170px 80px 80px;
+padding:180px 80px 80px;
+opacity:0;
+transform:translateY(30px);
+transition:0.6s;
 display:none;
 }
 
-.active{
+section.active{
 display:block;
+opacity:1;
+transform:translateY(0);
 }
 
 .hero{
@@ -158,28 +251,29 @@ text-align:center;
 }
 
 .hero-content h2{
-font-size:100px;
+font-size:110px;
 font-weight:900;
-line-height:1;
+line-height:0.95;
+letter-spacing:-5px;
 }
 
 .gradient{
-background:linear-gradient(to right,#22c55e,#06b6d4);
+background:linear-gradient(to right,var(--primary),var(--secondary));
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
 
 .hero-content p{
-margin-top:30px;
+margin-top:35px;
 font-size:24px;
-color:#94a3b8;
+color:var(--muted);
 max-width:850px;
 margin-inline:auto;
-line-height:1.7;
+line-height:1.8;
 }
 
 .buttons{
-margin-top:50px;
+margin-top:55px;
 display:flex;
 gap:20px;
 justify-content:center;
@@ -196,16 +290,18 @@ font-size:18px;
 font-weight:700;
 transition:0.4s;
 cursor:pointer;
+position:relative;
+overflow:hidden;
 }
 
 .primary-btn,
 .submit-btn{
-background:linear-gradient(to right,#22c55e,#06b6d4);
+background:linear-gradient(to right,var(--primary),var(--secondary));
 }
 
 .secondary-btn{
 background:rgba(255,255,255,0.05);
-color:white;
+color:var(--text);
 border:1px solid rgba(255,255,255,0.1);
 }
 
@@ -216,33 +312,56 @@ transform:translateY(-5px) scale(1.03);
 box-shadow:0 0 40px rgba(34,197,94,0.35);
 }
 
+.title{
+font-size:72px;
+font-weight:900;
+margin-bottom:50px;
+letter-spacing:-3px;
+}
+
 .cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:30px;
-margin-top:60px;
 }
 
-.card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(20px);
+.card,
+.chart-box,
+.auth-container,
+.watchlist-box{
+background:var(--card);
+border:1px solid var(--border);
+backdrop-filter:blur(25px);
 border-radius:30px;
 padding:40px;
 transition:0.5s;
+position:relative;
+overflow:hidden;
 box-shadow:0 10px 40px rgba(0,0,0,0.35);
 }
 
-.card:hover{
-transform:translateY(-12px);
+.card::before,
+.chart-box::before,
+.auth-container::before{
+content:'';
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent);
+pointer-events:none;
+}
+
+.card:hover,
+.chart-box:hover,
+.watchlist-box:hover{
+transform:translateY(-10px);
 box-shadow:
 0 0 40px rgba(34,197,94,0.25),
 0 0 80px rgba(6,182,212,0.18);
 }
 
 .card h3{
-color:#94a3b8;
 font-size:22px;
+color:var(--muted);
 }
 
 .card h1{
@@ -254,20 +373,35 @@ font-weight:900;
 .green{color:#22c55e;}
 .red{color:#ef4444;}
 
-.title{
-font-size:70px;
-font-weight:900;
-margin-bottom:50px;
+.market-grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:30px;
+margin-top:40px;
 }
 
-.chart-box,
-.auth-container{
+.watchlist-items{
+margin-top:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.watch-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+border-radius:15px;
 background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(20px);
-border-radius:30px;
-padding:40px;
-margin-top:60px;
+}
+
+.watch-btn{
+background:none;
+border:none;
+color:gold;
+font-size:20px;
+cursor:pointer;
 }
 
 .gallery-controls{
@@ -289,7 +423,7 @@ transition:0.3s;
 }
 
 .filter-btn:hover{
-background:#22c55e;
+background:var(--primary);
 color:black;
 }
 
@@ -315,6 +449,13 @@ animation:floatCard 6s ease-in-out infinite;
 cursor:pointer;
 }
 
+.gallery-card.hide{
+opacity:0;
+transform:scale(0.8);
+pointer-events:none;
+position:absolute;
+}
+
 .gallery-card img{
 width:100%;
 height:100%;
@@ -329,10 +470,6 @@ filter:brightness(1.1);
 
 .gallery-card:hover{
 transform:translateY(-12px) scale(1.02);
-box-shadow:
-0 0 30px rgba(34,197,94,0.25),
-0 0 80px rgba(6,182,212,0.18),
-0 25px 60px rgba(0,0,0,0.5);
 }
 
 .overlay{
@@ -347,8 +484,6 @@ padding:30px;
 .overlay h2{
 font-size:30px;
 font-weight:800;
-letter-spacing:1px;
-text-shadow:0 2px 10px rgba(0,0,0,0.5);
 }
 
 @keyframes floatCard{
@@ -389,7 +524,7 @@ margin-bottom:25px;
 .input-group label{
 display:block;
 margin-bottom:10px;
-color:#94a3b8;
+color:var(--muted);
 }
 
 .input-group input{
@@ -398,47 +533,90 @@ padding:18px;
 border:none;
 border-radius:15px;
 background:rgba(255,255,255,0.08);
-color:white;
+color:var(--text);
 font-size:16px;
 outline:none;
 }
 
 footer{
 text-align:center;
-padding:40px;
-color:#94a3b8;
+padding:60px 30px;
+color:var(--muted);
 border-top:1px solid rgba(255,255,255,0.08);
+margin-top:60px;
 }
 
-@media(max-width:900px){
-
-.cursor{display:none;}
-
-nav{
-padding:20px;
-flex-direction:column;
-gap:20px;
+.footer-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:40px;
+margin-bottom:40px;
+text-align:left;
 }
 
-nav ul{
-flex-wrap:wrap;
-justify-content:center;
+.footer-grid h3{
+margin-bottom:20px;
 }
 
-section{
-padding:220px 20px 40px;
+.footer-grid p,
+.footer-grid a{
+color:var(--muted);
+text-decoration:none;
+display:block;
+margin-bottom:10px;
+}
+
+.socials{
+display:flex;
+gap:15px;
+font-size:24px;
+margin-top:15px;
+}
+
+@media(max-width:1000px){
+
+.market-grid{
+grid-template-columns:1fr;
 }
 
 .hero-content h2{
-font-size:60px;
+font-size:70px;
 }
 
 .title{
-font-size:45px;
+font-size:50px;
 }
 
-.gallery-grid{
-grid-template-columns:1fr;
+nav{
+padding:20px;
+}
+
+section{
+padding:220px 20px 60px;
+}
+
+nav ul{
+position:fixed;
+top:110px;
+right:-100%;
+width:280px;
+height:100vh;
+background:#020617;
+flex-direction:column;
+padding-top:50px;
+transition:0.5s;
+}
+
+nav ul.active{
+right:0;
+}
+
+.menu-btn{
+display:block;
+}
+
+.cursor{
+display:none;
 }
 
 }
@@ -447,6 +625,13 @@ grid-template-columns:1fr;
 </head>
 
 <body>
+
+<div id="particles-js"></div>
+
+<div id="loader">
+<h1 class="loader-logo">StockTracker</h1>
+<p class="loader-text">PREMIUM MARKET ANALYTICS</p>
+</div>
 
 <div class="cursor"></div>
 
@@ -462,9 +647,9 @@ grid-template-columns:1fr;
 </div>
 
 <nav>
-<h1>StockTracker</h1>
+<h1 class="logo">StockTracker</h1>
 
-<ul>
+<ul id="navLinks">
 <li><a onclick="showPage('home')">Home</a></li>
 <li><a onclick="showPage('markets')">Markets</a></li>
 <li><a onclick="showPage('portfolio')">Portfolio</a></li>
@@ -473,10 +658,14 @@ grid-template-columns:1fr;
 <li><a onclick="showPage('signup')">Sign Up</a></li>
 </ul>
 
+<div style="display:flex;gap:15px;align-items:center;">
 <button class="toggle-btn" onclick="toggleTheme()">
 <i class="fa-solid fa-moon"></i>
 </button>
-
+<div class="menu-btn" onclick="toggleMenu()">
+<i class="fa-solid fa-bars"></i>
+</div>
+</div>
 </nav>
 
 <section id="home" class="active">
@@ -489,7 +678,7 @@ Track Markets <br>
 
 <p>
 Premium stock market analytics platform with real-time insights,
-AI-powered dashboards, and advanced investment tracking.
+AI-powered dashboards, intelligent watchlists, and advanced investment tracking.
 </p>
 
 <div class="buttons">
@@ -504,14 +693,34 @@ AI-powered dashboards, and advanced investment tracking.
 <h1 class="title">Live Markets</h1>
 
 <div class="cards">
-<div class="card"><h3>Apple</h3><h1 class="green">+2.4%</h1></div>
-<div class="card"><h3>Tesla</h3><h1 class="red">-1.1%</h1></div>
-<div class="card"><h3>NVIDIA</h3><h1 class="green">+3.7%</h1></div>
-<div class="card"><h3>Amazon</h3><h1 class="green">+1.9%</h1></div>
+<div class="card"><h3>Apple</h3><h1 class="green counter" data-target="240">0</h1></div>
+<div class="card"><h3>Tesla</h3><h1 class="red counter" data-target="110">0</h1></div>
+<div class="card"><h3>NVIDIA</h3><h1 class="green counter" data-target="370">0</h1></div>
+<div class="card"><h3>Amazon</h3><h1 class="green counter" data-target="190">0</h1></div>
 </div>
 
+<div class="market-grid">
 <div class="chart-box">
 <canvas id="marketChart"></canvas>
+</div>
+
+<div class="watchlist-box">
+<h2>Watchlist</h2>
+<div class="watchlist-items">
+<div class="watch-item">
+<span>AAPL</span>
+<button class="watch-btn"><i class="fa-solid fa-star"></i></button>
+</div>
+<div class="watch-item">
+<span>TSLA</span>
+<button class="watch-btn"><i class="fa-solid fa-star"></i></button>
+</div>
+<div class="watch-item">
+<span>NVDA</span>
+<button class="watch-btn"><i class="fa-solid fa-star"></i></button>
+</div>
+</div>
+</div>
 </div>
 </section>
 
@@ -519,9 +728,9 @@ AI-powered dashboards, and advanced investment tracking.
 <h1 class="title">Portfolio Dashboard</h1>
 
 <div class="cards">
-<div class="card"><h3>Total Balance</h3><h1 class="green">₹1,25,000</h1></div>
-<div class="card"><h3>Today's Profit</h3><h1 class="green">+₹4,500</h1></div>
-<div class="card"><h3>Active Stocks</h3><h1>12</h1></div>
+<div class="card"><h3>Total Balance</h3><h1 class="green counter" data-target="125000">0</h1></div>
+<div class="card"><h3>Today's Profit</h3><h1 class="green counter" data-target="4500">0</h1></div>
+<div class="card"><h3>Active Stocks</h3><h1 class="counter" data-target="12">0</h1></div>
 </div>
 </section>
 
@@ -538,53 +747,33 @@ AI-powered dashboards, and advanced investment tracking.
 <div class="gallery-grid">
 
 <div class="gallery-card market" onclick="openLightbox(this)">
-<img src="images/market-open.jpg">
+<img loading="lazy" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop">
 <div class="overlay"><h2>Market Open</h2></div>
 </div>
 
 <div class="gallery-card analysis" onclick="openLightbox(this)">
-<img src="images/mid-day-analysis.jpg">
+<img loading="lazy" src="https://images.unsplash.com/photo-1559526324-593bc073d938?q=80&w=1200&auto=format&fit=crop">
 <div class="overlay"><h2>Mid-Day Analysis</h2></div>
 </div>
 
-<div class="gallery-card market" onclick="openLightbox(this)">
-<img src="images/market-close.jpg">
-<div class="overlay"><h2>Market Close</h2></div>
-</div>
-
 <div class="gallery-card strategy" onclick="openLightbox(this)">
-<img src="images/profit-growth.jpg">
-<div class="overlay"><h2>Profit Growth</h2></div>
-</div>
-
-<div class="gallery-card analysis" onclick="openLightbox(this)">
-<img src="images/loss-analysis.jpg">
-<div class="overlay"><h2>Loss Analysis</h2></div>
-</div>
-
-<div class="gallery-card strategy" onclick="openLightbox(this)">
-<img src="images/portfolio-management.jpg">
-<div class="overlay"><h2>Portfolio Management</h2></div>
-</div>
-
-<div class="gallery-card analysis" onclick="openLightbox(this)">
-<img src="images/technical-analysis.jpg">
-<div class="overlay"><h2>Technical Analysis</h2></div>
-</div>
-
-<div class="gallery-card strategy" onclick="openLightbox(this)">
-<img src="images/investor-strategy.jpg">
+<img loading="lazy" src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?q=80&w=1200&auto=format&fit=crop">
 <div class="overlay"><h2>Investor Strategy</h2></div>
 </div>
 
 <div class="gallery-card market" onclick="openLightbox(this)">
-<img src="images/stock-comparison.jpg">
-<div class="overlay"><h2>Stock Comparison</h2></div>
+<img loading="lazy" src="https://images.unsplash.com/photo-1611974789855-f1d4c2bafa2f?q=80&w=1200&auto=format&fit=crop">
+<div class="overlay"><h2>Global Market</h2></div>
 </div>
 
-<div class="gallery-card market" onclick="openLightbox(this)">
-<img src="images/global-market.jpg">
-<div class="overlay"><h2>Global Market Overview</h2></div>
+<div class="gallery-card analysis" onclick="openLightbox(this)">
+<img loading="lazy" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop">
+<div class="overlay"><h2>Technical Analysis</h2></div>
+</div>
+
+<div class="gallery-card strategy" onclick="openLightbox(this)">
+<img loading="lazy" src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1200&auto=format&fit=crop">
+<div class="overlay"><h2>Portfolio Management</h2></div>
 </div>
 
 </div>
@@ -592,41 +781,83 @@ AI-powered dashboards, and advanced investment tracking.
 
 <section id="login">
 <div class="auth-container">
-<h1>Login</h1>
+<h1 class="title">Login</h1>
+
 <div class="input-group">
 <label>Email</label>
 <input type="email" placeholder="Enter your email">
 </div>
+
 <div class="input-group">
 <label>Password</label>
 <input type="password" placeholder="Enter your password">
 </div>
+
 <button class="submit-btn">Login</button>
 </div>
 </section>
 
 <section id="signup">
 <div class="auth-container">
-<h1>Create Account</h1>
+<h1 class="title">Create Account</h1>
+
 <div class="input-group">
 <label>Full Name</label>
 <input type="text" placeholder="Enter your name">
 </div>
+
 <div class="input-group">
 <label>Email</label>
 <input type="email" placeholder="Enter your email">
 </div>
+
 <div class="input-group">
 <label>Password</label>
 <input type="password" placeholder="Create password">
 </div>
+
 <button class="submit-btn">Sign Up</button>
 </div>
 </section>
 
 <footer>
-<h2>StockTracker</h2>
-<p>Premium stock market analytics platform.</p>
+
+<div class="footer-grid">
+<div>
+<h3>StockTracker</h3>
+<p>Premium stock market analytics platform with AI-powered insights.</p>
+<div class="socials">
+<i class="fab fa-instagram"></i>
+<i class="fab fa-x-twitter"></i>
+<i class="fab fa-linkedin"></i>
+<i class="fab fa-github"></i>
+</div>
+</div>
+
+<div>
+<h3>Quick Links</h3>
+<a href="#">Markets</a>
+<a href="#">Portfolio</a>
+<a href="#">Analytics</a>
+<a href="#">Pricing</a>
+</div>
+
+<div>
+<h3>Market Status</h3>
+<p>NIFTY: Open</p>
+<p>SENSEX: Open</p>
+<p>NASDAQ: Closed</p>
+</div>
+
+<div>
+<h3>Contact</h3>
+<p>support@stocktracker.com</p>
+<p>Mumbai, India</p>
+</div>
+</div>
+
+<p>© 2026 StockTracker Premium. All Rights Reserved.</p>
+
 </footer>
 
 <div class="lightbox" id="lightbox">
@@ -636,6 +867,12 @@ AI-powered dashboards, and advanced investment tracking.
 
 <script>
 
+window.addEventListener('load',()=>{
+setTimeout(()=>{
+document.getElementById('loader').style.display='none';
+},1800);
+});
+
 function showPage(pageId){
 const sections=document.querySelectorAll('section');
 sections.forEach(section=>section.classList.remove('active'));
@@ -643,15 +880,32 @@ document.getElementById(pageId).classList.add('active');
 window.scrollTo({top:0,behavior:'smooth'});
 }
 
+window.addEventListener('scroll',()=>{
+const nav=document.querySelector('nav');
+
+if(window.scrollY>50){
+nav.classList.add('scrolled');
+}
+else{
+nav.classList.remove('scrolled');
+}
+});
+
 const cursor=document.querySelector('.cursor');
 
 document.addEventListener('mousemove',(e)=>{
+if(cursor){
 cursor.style.left=e.clientX+'px';
 cursor.style.top=e.clientY+'px';
+}
 });
 
 function toggleTheme(){
 document.body.classList.toggle('light');
+}
+
+function toggleMenu(){
+document.getElementById('navLinks').classList.toggle('active');
 }
 
 function openLightbox(card){
@@ -669,28 +923,46 @@ const cards=document.querySelectorAll('.gallery-card');
 
 cards.forEach(card=>{
 if(category==='all'){
-card.style.display='block';
+card.classList.remove('hide');
 }
 else if(card.classList.contains(category)){
-card.style.display='block';
+card.classList.remove('hide');
 }
 else{
-card.style.display='none';
+card.classList.add('hide');
 }
 });
 }
 
+const counters=document.querySelectorAll('.counter');
+
+counters.forEach(counter=>{
+
+const updateCounter=()=>{
+
+const target=+counter.getAttribute('data-target');
+const current=+counter.innerText.replace(/,/g,'');
+
+const increment=target/100;
+
+if(current<target){
+counter.innerText=Math.ceil(current+increment).toLocaleString();
+setTimeout(updateCounter,20);
+}
+else{
+counter.innerText=target.toLocaleString();
+}
+
+};
+
+updateCounter();
+
+});
+
 const galleryImages=[
-'images/market-open.jpg',
-'images/mid-day-analysis.jpg',
-'images/market-close.jpg',
-'images/profit-growth.jpg',
-'images/loss-analysis.jpg',
-'images/portfolio-management.jpg',
-'images/technical-analysis.jpg',
-'images/investor-strategy.jpg',
-'images/stock-comparison.jpg',
-'images/global-market.jpg'
+'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop',
+'https://images.unsplash.com/photo-1559526324-593bc073d938?q=80&w=1200&auto=format&fit=crop',
+'https://images.unsplash.com/photo-1642790106117-e829e14a795f?q=80&w=1200&auto=format&fit=crop'
 ];
 
 let slideIndex=0;
@@ -698,9 +970,6 @@ let slideIndex=0;
 setInterval(()=>{
 slideIndex=(slideIndex+1)%galleryImages.length;
 document.body.style.backgroundImage=`linear-gradient(rgba(2,6,23,0.92),rgba(2,6,23,0.92)), url(${galleryImages[slideIndex]})`;
-document.body.style.backgroundSize='cover';
-document.body.style.backgroundAttachment='fixed';
-document.body.style.backgroundPosition='center';
 },7000);
 
 const ctx=document.getElementById('marketChart');
@@ -722,7 +991,9 @@ pointRadius:0
 },
 options:{
 responsive:true,
-plugins:{legend:{display:false}},
+plugins:{
+legend:{display:false}
+},
 scales:{
 x:{
 ticks:{color:'#94a3b8'},
@@ -736,9 +1007,31 @@ grid:{color:'rgba(255,255,255,0.05)'}
 }
 });
 
+particlesJS('particles-js', {
+particles: {
+number: { value: 60 },
+color: { value: '#22c55e' },
+shape: { type: 'circle' },
+opacity: { value: 0.4 },
+size: { value: 3 },
+move: {
+enable: true,
+speed: 2
+},
+line_linked: {
+enable: true,
+distance: 150,
+color: '#06b6d4',
+opacity: 0.2,
+width: 1
+}
+}
+});
+
 </script>
 
 </body>
 </html>
-```
 
+* Responsive layout
+* Premium animations
